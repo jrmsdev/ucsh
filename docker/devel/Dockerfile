@@ -12,15 +12,28 @@ RUN mkdir -vp -m 0750 /go && mkdir -vp -m 0750 /go/src && \
 	mkdir -vp -m 0750 /go/src/ucsh && chown -vR ucsh:ucsh /go
 VOLUME /go/src/ucsh
 
+ENV GOPATH /root/go
+ENV GOBIN /usr/local/bin
+
+RUN apk add --no-cache git && \
+	go get -v golang.org/x/tools/cmd/godoc && \
+	go generate -v golang.org/x/tools/godoc/static && \
+	go install -v -i golang.org/x/tools/cmd/godoc && \
+	apk del --no-cache --purge git && \
+	rm -rf /root/go
+
 ARG UCSH_UMASK
 
 RUN printf 'umask %s\n' "${UCSH_UMASK}" >>/home/ucsh/.profile
 RUN printf 'export GOPATH=/go\n' >>/home/ucsh/.profile
 
+ADD --chown=ucsh entrypoint.sh /usr/local/bin/entrypoint.sh
+
 USER ucsh:ucsh
 WORKDIR /go/src/ucsh
 
+ENV GOBIN ''
 ENV GOPATH /go
 RUN go env && go version
 
-CMD exec /bin/sh -l
+ENTRYPOINT /usr/local/bin/entrypoint.sh
