@@ -11,31 +11,28 @@ import (
 )
 
 func Print(args ...interface{}) {
-	_, err := gf.Fprintln(os.Stderr, args...)
+	_, err := gf.Fprintln(os.Stderr, "ucsh:", gf.Sprint(args...))
 	if err != nil {
 		panic(err)
 	}
 }
 
 func Printf(fmt string, args ...interface{}) {
-	_, err := gf.Fprintln(os.Stderr, gf.Sprintf(fmt, args...))
-	if err != nil {
-		panic(err)
-	}
+	Print(gf.Sprintf(fmt, args...))
 }
 
 func p(out io.Writer, tag string, fmt string, args ...interface{}) {
-	_, err := gf.Fprintln(out, tag, gf.Sprintf(fmt, args...))
+	_, err := gf.Fprintln(out, "ucsh:", tag, gf.Sprintf(fmt, args...))
 	if err != nil {
 		panic(err)
 	}
 }
 
 func Debug(fmt string, args ...interface{}) {
-	tag := "D:"
+	tag := "[D]"
 	_, fn, ln, ok := runtime.Caller(1)
 	if ok {
-		tag = gf.Sprintf("D: %s:%d", fn, ln)
+		tag = gf.Sprintf("%s %s:%d", tag, fn, ln)
 	}
 	p(os.Stderr, tag, fmt, args...)
 }
