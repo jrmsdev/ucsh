@@ -6,13 +6,15 @@ package ucsh
 import (
 	"os"
 
+	"github.com/jrmsdev/ucsh/internal/cfg"
 	"github.com/jrmsdev/ucsh/internal/env"
 	"github.com/jrmsdev/ucsh/internal/log"
 	"github.com/jrmsdev/ucsh/internal/user"
 )
 
 func Main() {
-	log.Debug("main start")
+	log.Debug("start")
+	cfg.Debug()
 	e := env.New()
 	u, err := user.New(e)
 	if err != nil {
@@ -22,5 +24,5 @@ func Main() {
 	for _, e := range os.Environ() {
 		log.Print(e)
 	}
-	log.Debug("main end")
+	log.Debug("end")
 }
