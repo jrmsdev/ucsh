@@ -5,7 +5,6 @@ package log
 
 import (
 	gf "fmt"
-	"io"
 	"os"
 	"runtime"
 )
@@ -21,18 +20,26 @@ func Printf(fmt string, args ...interface{}) {
 	Print(gf.Sprintf(fmt, args...))
 }
 
-func p(out io.Writer, tag string, fmt string, args ...interface{}) {
-	_, err := gf.Fprintln(out, "ucsh:", tag, gf.Sprintf(fmt, args...))
+func p(tag string, args ...interface{}) {
+	_, err := gf.Fprintln(os.Stderr, "ucsh:", tag, gf.Sprint(args...))
 	if err != nil {
 		panic(err)
 	}
 }
 
-func Debug(fmt string, args ...interface{}) {
+func dbg() string {
 	tag := "[D]"
-	_, fn, ln, ok := runtime.Caller(1)
+	_, fn, ln, ok := runtime.Caller(2)
 	if ok {
-		tag = gf.Sprintf("%s %s:%d", tag, fn, ln)
+		return gf.Sprintf("%s %s:%d", tag, fn, ln)
 	}
-	p(os.Stderr, tag, fmt, args...)
+	return tag
+}
+
+func Debug(args ...interface{}) {
+	p(dbg(), args...)
+}
+
+func Debugf(fmt string, args ...interface{}) {
+	p(dbg(), gf.Sprintf(fmt, args...))
 }
