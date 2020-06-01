@@ -20,6 +20,7 @@ WORKDIR /home/ucsh
 ENV USER ucsh
 ENV HOME /home/ucsh
 
-RUN printf "PS1='%s '\n" '\u:\W\$' >.profile
+RUN printf "export PS1='%s '\n" '\u:\W\$' >.profile
+RUN printf "export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin\n" >>.profile
 
 CMD exec /bin/sh -l
