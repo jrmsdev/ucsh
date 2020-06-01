@@ -1,3 +1,3 @@
 module github.com/jrmsdev/ucsh
 
-go 1.14
+go 1.13
