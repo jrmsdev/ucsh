@@ -27,19 +27,24 @@ func p(tag string, args ...interface{}) {
 	}
 }
 
-func dbg() string {
-	tag := "[D]"
+func tag(s string) string {
+	t := gf.Sprintf("[%s]", s)
 	_, fn, ln, ok := runtime.Caller(2)
 	if ok {
-		return gf.Sprintf("%s %s:%d", tag, fn, ln)
+		return gf.Sprintf("%s %s:%d", t, fn, ln)
 	}
-	return tag
+	return t
+}
+
+func Panic(args ...interface{}) {
+	p(tag("PANIC"), args...)
+	panic("ucsh")
 }
 
 func Debug(args ...interface{}) {
-	p(dbg(), args...)
+	p(tag("D"), args...)
 }
 
 func Debugf(fmt string, args ...interface{}) {
-	p(dbg(), gf.Sprintf(fmt, args...))
+	p(tag("D"), gf.Sprintf(fmt, args...))
 }
