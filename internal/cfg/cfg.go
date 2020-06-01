@@ -84,7 +84,5 @@ func Init() error {
 }
 
 func Debug() {
-	log.Debugf("%#v", c)
-	Init()
 	log.Debugf("user.shell: %s", Config.User.Shell)
 }

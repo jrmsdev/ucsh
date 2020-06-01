@@ -14,11 +14,14 @@ import (
 
 func Main() {
 	log.Debug("start")
+	if err := cfg.Init(); err != nil {
+		log.Panic(err)
+	}
 	cfg.Debug()
 	e := env.New()
 	u, err := user.New(e)
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	log.Print(u)
 	for _, e := range os.Environ() {
