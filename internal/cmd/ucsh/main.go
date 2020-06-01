@@ -4,7 +4,6 @@
 package ucsh
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/jrmsdev/ucsh/internal/env"
@@ -19,9 +18,9 @@ func Main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(u)
+	log.Print(u)
 	for _, e := range os.Environ() {
-		fmt.Println(e)
+		log.Print(e)
 	}
 	log.Debug("main end")
 }

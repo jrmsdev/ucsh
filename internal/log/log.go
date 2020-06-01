@@ -10,8 +10,18 @@ import (
 	"runtime"
 )
 
-func Print(fmt string, args ...interface{}) {
-	gf.Fprintf(os.Stderr, fmt, args...)
+func Print(args ...interface{}) {
+	_, err := gf.Fprintln(os.Stderr, args...)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func Printf(fmt string, args ...interface{}) {
+	_, err := gf.Fprintln(os.Stderr, gf.Sprintf(fmt, args...))
+	if err != nil {
+		panic(err)
+	}
 }
 
 func p(out io.Writer, tag string, fmt string, args ...interface{}) {
