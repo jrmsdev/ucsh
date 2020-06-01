@@ -48,3 +48,11 @@ func Debug(args ...interface{}) {
 func Debugf(fmt string, args ...interface{}) {
 	p(tag("D"), gf.Sprintf(fmt, args...))
 }
+
+func Error(args ...interface{}) {
+	p(tag("E"), args...)
+}
+
+func Errorf(fmt string, args ...interface{}) {
+	p(tag("E"), gf.Sprintf(fmt, args...))
+}
