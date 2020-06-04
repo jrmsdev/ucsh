@@ -19,7 +19,7 @@ func New() *Env {
 
 func (e *Env) Debug() {
 	for _, e := range os.Environ() {
-		log.Debugf("env %s", e)
+		log.Debugf("env '%s'", e)
 	}
 }
 

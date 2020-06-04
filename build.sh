@@ -1,3 +1,3 @@
 #!/bin/sh
 set -eu
-exec go build -i -o ./build/ucsh.bin
+exec go build -mod=vendor -i -o ./build/ucsh.bin
