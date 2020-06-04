@@ -4,8 +4,6 @@
 package ucsh
 
 import (
-	"os"
-
 	"github.com/jrmsdev/ucsh/internal/cfg"
 	"github.com/jrmsdev/ucsh/internal/env"
 	"github.com/jrmsdev/ucsh/internal/log"
@@ -14,18 +12,18 @@ import (
 
 func Main() {
 	log.Debug("start")
+	// config
 	if err := cfg.Init(); err != nil {
 		log.Panic(err)
 	}
-	cfg.Debug()
+	// env
 	e := env.New()
+	e.Debug()
+	// user
 	u, err := user.New(e)
 	if err != nil {
 		log.Panic(err)
 	}
-	log.Print(u)
-	for _, e := range os.Environ() {
-		log.Print(e)
-	}
+	log.Debug(u)
 	log.Debug("end")
 }

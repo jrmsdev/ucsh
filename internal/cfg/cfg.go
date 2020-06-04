@@ -80,9 +80,10 @@ func Init() error {
 	if err := load(); err != nil {
 		return err
 	}
+	debug()
 	return nil
 }
 
-func Debug() {
+func debug() {
 	log.Debugf("user.shell: %s", Config.User.Shell)
 }

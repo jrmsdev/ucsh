@@ -5,6 +5,7 @@ package user
 
 import (
 	"github.com/jrmsdev/ucsh/internal/env"
+	"github.com/jrmsdev/ucsh/internal/log"
 )
 
 type User struct {
@@ -12,6 +13,7 @@ type User struct {
 }
 
 func New(e *env.Env) (*User, error) {
+	log.Debug("new")
 	if err := e.Validate(); err != nil {
 		return nil, err
 	}
@@ -19,5 +21,5 @@ func New(e *env.Env) (*User, error) {
 }
 
 func (u *User) String() string {
-	return "lalala"
+	return "FIXME"
 }
