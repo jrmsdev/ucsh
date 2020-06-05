@@ -1,5 +1,4 @@
 #!/bin/sh
 set -eu
-go clean -cache -testcache ./...
-rm -vrf ./build
-exit 0
+rm -vrf ./_build
+exec go clean -cache -testcache ./...

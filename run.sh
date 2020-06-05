@@ -1,4 +1,4 @@
 #!/bin/sh
 set -eu
-test -x ./build.sh && ./build.sh
-exec ./build/ucsh.bin $@
+./build.sh
+exec ./_build/ucsh.bin $@
