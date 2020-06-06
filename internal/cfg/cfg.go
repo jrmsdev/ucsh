@@ -34,8 +34,6 @@ type ucsh struct {
 
 var c = &ucsh{D: Config}
 
-var cinit = false
-
 var cfgfiles = []string{
 	"/etc/ucsh.cfg",
 	"/usr/local/etc/ucsh.cfg",
@@ -68,19 +66,6 @@ func load() error {
 			log.Debugf("loaded %s", fn)
 		}
 	}
-	return nil
-}
-
-func Init() error {
-	log.Debug("init")
-	if cinit {
-		log.Panic("config init already done")
-	}
-	cinit = true
-	if err := load(); err != nil {
-		return err
-	}
-	debug()
 	return nil
 }
 
