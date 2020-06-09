@@ -35,10 +35,10 @@ func Setup(t *testing.T, src string) {
 	newTest(cur, t)
 	cur.conf = filepath.Join("testdata", src + ".json")
 	cur.t.Logf("setup: %s", cur.conf)
-	cfg.InitTest(cur.t)
+	cfg.InitTest(cur.t, cur.conf)
 }
 
 func Cleanup() {
 	cur.t.Logf("cleanup: %s", cur.conf)
-	cfg.InitTestCleanup(cur.t)
+	cfg.InitTestCleanup(cur.t, cur.conf)
 }

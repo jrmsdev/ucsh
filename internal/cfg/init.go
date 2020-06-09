@@ -4,11 +4,30 @@
 package cfg
 
 import (
+	"encoding/json"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+
 	"github.com/jrmsdev/ucsh/internal/log"
 )
 
 var cinit = false
 var cinitPanics = true
+
+var cfgfiles = []string{
+	"/etc/ucsh.cfg",
+	"/usr/local/etc/ucsh.cfg",
+	userCfgFile(),
+}
+
+func userCfgFile() string {
+	d, err := os.UserConfigDir()
+	if err != nil {
+		log.Panic(err)
+	}
+	return filepath.Join(d, "ucsh.cfg")
+}
 
 func Init() error {
 	log.Debug("init")
@@ -21,9 +40,30 @@ func Init() error {
 		}
 	}
 	cinit = true
-	if err := load(); err != nil {
-		return err
+	for _, fn := range cfgfiles {
+		if err := load(fn); err != nil {
+			return err
+		}
 	}
 	debug()
+	return nil
+}
+
+func load(fn string) error {
+	blob, err := ioutil.ReadFile(fn)
+	if err != nil {
+		if os.IsNotExist(err) {
+			log.Debug(err)
+		} else {
+			log.Error(err)
+		}
+	} else {
+		err := json.Unmarshal(blob, c)
+		if err != nil {
+			log.Error(err)
+			return err
+		}
+		log.Debugf("loaded %s", fn)
+	}
 	return nil
 }

@@ -7,6 +7,6 @@ import (
 	"testing"
 )
 
-func TestMain(t *testing.T) {
+func TestCmdMain(t *testing.T) {
 	Main()
 }
