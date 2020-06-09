@@ -21,7 +21,10 @@ type ucsht struct {
 	D *tconfig `json:"ucsht,omitempty"`
 }
 
-var testc = new(tconfig)
+var testc = &tconfig{
+	CfgInitPanics: true,
+}
+
 var tcobj = &ucsht{D: testc}
 
 func InitTest(t *testing.T, conf string) {
