@@ -36,13 +36,13 @@ func Init() error {
 			log.Panic("config init already done")
 		} else {
 			log.Debug("config init alredy done... abort!")
-			return nil
 		}
-	}
-	cinit = true
-	for _, fn := range cfgfiles {
-		if err := load(fn); err != nil {
-			return err
+	} else {
+		cinit = true
+		for _, fn := range cfgfiles {
+			if err := load(fn); err != nil {
+				return err
+			}
 		}
 	}
 	debug()
