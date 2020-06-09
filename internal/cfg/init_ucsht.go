@@ -21,7 +21,8 @@ type ucsht struct {
 	D *tconfig `json:"ucsht,omitempty"`
 }
 
-var testc = &ucsht{D: new(tconfig)}
+var testc = new(tconfig)
+var tcobj = &ucsht{D: testc}
 
 func InitTest(t *testing.T, conf string) {
 	cinitPanics = false
@@ -43,11 +44,12 @@ func loadTest(t *testing.T, conf string) {
 	if err != nil {
 		t.Fatal(err)
 	} else {
-		err := json.Unmarshal(blob, testc)
+		err := json.Unmarshal(blob, tcobj)
 		if err != nil {
 			t.Fatal(err)
 		}
 		t.Logf("loaded %s", conf)
-		t.Logf("%#v", testc.D)
 	}
+	t.Log("setup test")
+	cinitPanics = testc.CfgInitPanics
 }
