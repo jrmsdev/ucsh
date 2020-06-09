@@ -8,6 +8,7 @@ package cfg
 import (
 	"encoding/json"
 	"io/ioutil"
+	"path/filepath"
 	"testing"
 
 	//~ "github.com/jrmsdev/ucsh/internal/log"
@@ -15,6 +16,7 @@ import (
 
 type tconfig struct {
 	CfgInitPanics bool
+	CfgUserFile string
 }
 
 type ucsht struct {
@@ -23,19 +25,19 @@ type ucsht struct {
 
 var testc = &tconfig{
 	CfgInitPanics: true,
+	CfgUserFile: filepath.Join("testdata", "user.cfg"),
 }
 
 var tcobj = &ucsht{D: testc}
 
 func InitTest(t *testing.T, conf string) {
-	cinitPanics = false
+	loadTest(t, conf)
 	if err := Init(); err != nil {
 		t.Fatal(err)
 	}
 	if err := load(conf); err != nil {
 		t.Fatal(err)
 	}
-	loadTest(t, conf)
 }
 
 func InitTestCleanup(t *testing.T, conf string) {

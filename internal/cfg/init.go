@@ -16,8 +16,8 @@ var cinit = false
 var cinitPanics = true
 
 var cfgfiles = []string{
-	"/etc/ucsh.cfg",
-	"/usr/local/etc/ucsh.cfg",
+	filepath.FromSlash("/etc/ucsh.cfg"),
+	filepath.FromSlash("/usr/local/etc/ucsh.cfg"),
 	userCfgFile(),
 }
 

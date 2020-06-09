@@ -18,27 +18,30 @@ type ucshTest struct {
 	conf string
 }
 
-func newTest(cur *ucshTest, parent *testing.T) {
+var bgctx = context.Background()
+
+func newTest(cur *ucshTest, parent *testing.T, src string) {
 	parent.Log("new")
 	cur.ctx = nil
 	cur.cancel = nil
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(bgctx)
 	cur.ctx = &ctx
 	cur.cancel = &cancel
+	cur.t = nil
 	cur.t = parent
-	cur.conf = ""
+	cur.conf = filepath.Join("testdata", src + ".json")
 }
 
 var cur = new(ucshTest)
 
-func Setup(t *testing.T, src string) {
-	newTest(cur, t)
-	cur.conf = filepath.Join("testdata", src + ".json")
-	cur.t.Logf("setup: %s", cur.conf)
-	cfg.InitTest(cur.t, cur.conf)
+func cleanup(t *testing.T, conf string) {
+	t.Logf("cleanup: %s", conf)
+	cfg.InitTestCleanup(t, conf)
 }
 
-func Cleanup() {
-	cur.t.Logf("cleanup: %s", cur.conf)
-	cfg.InitTestCleanup(cur.t, cur.conf)
+func Setup(t *testing.T, src string) {
+	newTest(cur, t, src)
+	cleanup(cur.t, cur.conf)
+	cur.t.Logf("setup: %s", cur.conf)
+	cfg.InitTest(cur.t, cur.conf)
 }
