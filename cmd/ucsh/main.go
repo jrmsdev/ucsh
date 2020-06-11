@@ -37,14 +37,16 @@ func main() {
 		}
 		fh, err := os.Open(fn)
 		if err != nil {
-			log.Error(err)
-			if !os.IsNotExist(err) {
+			if os.IsNotExist(err) {
+				log.Debug(err)
+			} else {
 				cfgerr = true
+				log.Error(err)
 			}
 		} else {
 			if err := sh.Config.Load(fh); err != nil {
-				log.Error(err)
 				cfgerr = true
+				log.Error(err)
 			}
 		}
 	}
