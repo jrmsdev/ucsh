@@ -19,9 +19,9 @@ func init() {
 }
 
 type UCSh struct {
-	ctx context.Context
+	ctx    context.Context
 	cancel context.CancelFunc
-	err error
+	err    error
 	Config *config.Config
 }
 
@@ -29,7 +29,7 @@ func New() *UCSh {
 	log.Debug("new")
 	ctx, cancel := context.WithCancel(bgctx)
 	return &UCSh{
-		ctx: ctx,
+		ctx:    ctx,
 		cancel: cancel,
 		Config: config.New(),
 	}

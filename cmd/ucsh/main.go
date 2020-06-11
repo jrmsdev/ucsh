@@ -13,10 +13,7 @@ import (
 )
 
 func userCfgFile() string {
-	d, err := os.UserConfigDir()
-	if err != nil {
-		return ""
-	}
+	d, _ := os.UserConfigDir()
 	return filepath.Join(d, "ucsh.cfg")
 }
 
@@ -32,7 +29,7 @@ func main() {
 	log.Debug(sh)
 	cfgerr := false
 	for _, fn := range cfgfiles {
-		if fn == "" {
+		if fn == "" || fn == "ucsh.cfg" {
 			continue
 		}
 		fh, err := os.Open(fn)

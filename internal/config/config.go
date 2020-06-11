@@ -12,7 +12,7 @@ import (
 )
 
 type Config struct {
-	obj *ucsh
+	obj  *ucsh
 	User *User `json:"user,omitempty"`
 }
 
