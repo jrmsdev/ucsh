@@ -49,6 +49,7 @@ func main() {
 				log.Error(err)
 			}
 		}
+		fh.Close()
 	}
 	if cfgerr {
 		sh.Fail("config error")
