@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 echo "--- install"
-go install -i .
+go install -i ./cmd/ucsh
 
 echo "--- exec"
-exec /go/bin/ucsh
+exec /usr/bin/sudo /bin/su -s /go/bin/ucsh -l ucsh
