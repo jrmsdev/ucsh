@@ -1,1 +1,7 @@
-{}
+{
+	"ucsh": {
+		"user": {
+			"shell": "/bin/bash"
+		}
+	}
+}

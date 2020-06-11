@@ -5,8 +5,8 @@ package config
 
 import (
 	"encoding/json"
+	"io"
 	"io/ioutil"
-	"os"
 
 	"github.com/jrmsdev/ucsh/internal/log"
 )
@@ -27,8 +27,8 @@ func New() *Config {
 	return c
 }
 
-func (c *Config) Load(fh *os.File) error {
-	log.Debugf("load %s", fh.Name())
+func (c *Config) Load(name string, fh io.Reader) error {
+	log.Debugf("load %s", name)
 	blob, err := ioutil.ReadAll(fh)
 	if err != nil {
 		log.Error(err)

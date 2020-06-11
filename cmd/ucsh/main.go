@@ -44,7 +44,7 @@ func main() {
 				log.Error(err)
 			}
 		} else {
-			if err := sh.Config.Load(fh); err != nil {
+			if err := sh.Config.Load(fh.Name(), fh); err != nil {
 				cfgerr = true
 				log.Error(err)
 			}
