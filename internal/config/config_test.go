@@ -8,6 +8,5 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	cfg, err := New()
-	t.Log(cfg, err)
+	New()
 }
