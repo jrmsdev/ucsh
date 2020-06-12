@@ -47,8 +47,7 @@ func (sh *UCSh) Fail(args ...interface{}) {
 
 func (sh *UCSh) Failf(f string, args ...interface{}) {
 	log.Debug("failf")
-	sh.err = errors.New(fmt.Sprintf(f, args...))
-	sh.cancel()
+	sh.Fail(fmt.Sprintf(f, args...))
 }
 
 func (sh *UCSh) Check() {
