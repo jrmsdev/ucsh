@@ -4,10 +4,13 @@
 package main
 
 import (
+	"errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/jrmsdev/ucsh"
 )
 
 var tfiles = []string{
@@ -61,4 +64,20 @@ func TestOpenError(t *testing.T) {
 		}
 	}()
 	main()
+}
+
+func TestOsUserError(t *testing.T) {
+	sh := ucsh.New()
+	prevErr := osUserErr
+	osUserErr = errors.New("testing os user error")
+	defer func() {
+		osUserErr = prevErr
+	}()
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Error("os user error did not fail")
+		}
+	}()
+	setup(sh)
 }

@@ -63,15 +63,22 @@ func configure(sh *ucsh.UCSh) {
 	}
 }
 
+var osUser *osuser.User
+var osUserErr error
+
+func init() {
+	osUser, osUserErr = osuser.Current()
+}
+
 func setup(sh *ucsh.UCSh) {
 	sh.Check()
 	log.Debug("setup")
-	cur, err := osuser.Current()
-	if err != nil {
-		log.Error(err)
-		sh.Fail(err)
+	if osUserErr != nil {
+		log.Error(osUserErr)
+		sh.Fail(osUserErr)
 	}
-	if err := sh.User.Load(cur); err != nil {
+	sh.Check()
+	if err := sh.User.Load(osUser); err != nil {
 		log.Error(err)
 		sh.Fail(err)
 	}
