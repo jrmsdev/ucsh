@@ -10,6 +10,7 @@ import (
 
 	"github.com/jrmsdev/ucsh/internal/config"
 	"github.com/jrmsdev/ucsh/internal/log"
+	"github.com/jrmsdev/ucsh/internal/user"
 )
 
 var bgctx context.Context
@@ -23,6 +24,7 @@ type UCSh struct {
 	cancel context.CancelFunc
 	err    error
 	Config *config.Config
+	User   *user.User
 }
 
 func New() *UCSh {
@@ -32,6 +34,7 @@ func New() *UCSh {
 		ctx:    ctx,
 		cancel: cancel,
 		Config: config.New(),
+		User:   user.New(),
 	}
 }
 

@@ -5,6 +5,7 @@ package main
 
 import (
 	"os"
+	osuser "os/user"
 	"path/filepath"
 
 	"github.com/jrmsdev/ucsh"
@@ -27,6 +28,15 @@ func main() {
 	log.Debug("start")
 	sh := ucsh.New()
 	log.Debug(sh)
+	configure(sh)
+	setup(sh)
+	cmd.Main(sh)
+	log.Debug("end")
+}
+
+func configure(sh *ucsh.UCSh) {
+	sh.Check()
+	log.Debug("configure")
 	cfgerr := false
 	for _, fn := range cfgfiles {
 		if fn == "" || fn == "ucsh.cfg" {
@@ -51,6 +61,18 @@ func main() {
 	if cfgerr {
 		sh.Fail("config error")
 	}
-	cmd.Main(sh)
-	log.Debug("end")
+}
+
+func setup(sh *ucsh.UCSh) {
+	sh.Check()
+	log.Debug("setup")
+	cur, err := osuser.Current()
+	if err != nil {
+		log.Error(err)
+		sh.Fail(err)
+	}
+	if err := sh.User.Load(cur); err != nil {
+		log.Error(err)
+		sh.Fail(err)
+	}
 }
