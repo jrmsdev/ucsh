@@ -29,7 +29,7 @@ func (u *User) check() {
 	}
 }
 
-func (u *User) Load(cur *osuser.User) error {
+func (u *User) Load(cur *osuser.User) {
 	log.Debugf("load %s", cur)
 	if u.cur != nil {
 		log.Debugf("reload... %s", u.cur)
@@ -43,5 +43,4 @@ func (u *User) Load(cur *osuser.User) error {
 	//~ if u.cur.HomeDir == "" {
 		//~ u.cur.HomeDir = u.cfg.HomeDir
 	//~ }
-	return nil
 }

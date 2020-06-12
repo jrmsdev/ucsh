@@ -7,6 +7,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"os"
+	osuser "os/user"
 	"path/filepath"
 	"testing"
 
@@ -77,6 +78,53 @@ func TestOsUserError(t *testing.T) {
 		r := recover()
 		if r == nil {
 			t.Error("os user error did not fail")
+		}
+	}()
+	setup(sh)
+}
+
+func TestUserLoad(t *testing.T) {
+	tuser := &osuser.User{
+		Uid: "1000",
+		Gid: "1000",
+		Username: "ucsht",
+	}
+	sh := ucsh.New()
+	prevUser := osUser
+	osUser = tuser
+	prevErr := osUserErr
+	osUserErr = nil
+	defer func() {
+		osUser = prevUser
+	}()
+	defer func() {
+		osUserErr = prevErr
+	}()
+	defer func() {
+		r := recover()
+		if r != nil {
+			t.Errorf("user load should not fail: %s", r)
+		}
+	}()
+	setup(sh)
+}
+
+func TestUserLoadError(t *testing.T) {
+	sh := ucsh.New()
+	prevUser := osUser
+	osUser = &osuser.User{}
+	prevErr := osUserErr
+	osUserErr = nil
+	defer func() {
+		osUser = prevUser
+	}()
+	defer func() {
+		osUserErr = prevErr
+	}()
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Error("user load should fail")
 		}
 	}()
 	setup(sh)

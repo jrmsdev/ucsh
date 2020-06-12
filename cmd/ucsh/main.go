@@ -78,8 +78,5 @@ func setup(sh *ucsh.UCSh) {
 		sh.Fail(osUserErr)
 	}
 	sh.Check()
-	if err := sh.User.Load(osUser); err != nil {
-		log.Error(err)
-		sh.Fail(err)
-	}
+	sh.User.Load(osUser)
 }
