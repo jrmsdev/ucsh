@@ -18,6 +18,17 @@ func New() *User {
 	return new(User)
 }
 
+func (u *User) check() {
+	log.Debug("check")
+	if u.cur == nil {
+		log.Panic("os user not loaded")
+	}
+	if u.cur.Uid == "" || u.cur.Gid == "" || u.cur.Username == "" {
+		log.Panicf("invalid os user: Uid:%s Gid:%s Username:%s",
+			u.cur.Uid, u.cur.Gid, u.cur.Username)
+	}
+}
+
 func (u *User) Load(cur *osuser.User) error {
 	log.Debugf("load %s", cur)
 	if u.cur != nil {
@@ -25,5 +36,12 @@ func (u *User) Load(cur *osuser.User) error {
 		u.cur = nil
 	}
 	u.cur = cur
+	u.check()
+	if u.cur.Name == "" {
+		u.cur.Name = u.cur.Username
+	}
+	//~ if u.cur.HomeDir == "" {
+		//~ u.cur.HomeDir = u.cfg.HomeDir
+	//~ }
 	return nil
 }
