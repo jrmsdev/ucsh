@@ -71,3 +71,8 @@ func Panic(args ...interface{}) {
 	p(tag("PANIC"), args...)
 	panic("ucsh")
 }
+
+func Panicf(fmt string, args ...interface{}) {
+	p(tag("PANIC"), gf.Sprintf(fmt, args...))
+	panic("ucsh")
+}

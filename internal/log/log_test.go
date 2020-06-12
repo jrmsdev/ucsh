@@ -85,3 +85,15 @@ func TestPanic(t *testing.T) {
 	}()
 	Panic("testing")
 }
+
+func TestPanicf(t *testing.T) {
+	buf.Reset()
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Error("log did not panic")
+		}
+		checkTag(t, "Panicf", "PANIC", "testing")
+	}()
+	Panicf("test%s", "ing")
+}
