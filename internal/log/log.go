@@ -5,15 +5,18 @@ package log
 
 import (
 	gf "fmt"
+	"io"
 	"os"
 	"runtime"
 	"strconv"
 )
 
-var out = os.Stderr
-var debug = false
+var out io.Writer
+var debug bool
 
 func init() {
+	out = os.Stderr
+	debug = false
 	env := os.Getenv("UCSH_DEBUG")
 	if env != "" {
 		dbg, err := strconv.ParseBool(env)
@@ -39,14 +42,17 @@ func tag(s string) string {
 	t := gf.Sprintf("[%s]", s)
 	_, fn, ln, ok := runtime.Caller(2)
 	if ok {
-		return gf.Sprintf("%s %s:%d", t, fn, ln)
+		t = gf.Sprintf("%s %s:%d", t, fn, ln)
 	}
 	return t
 }
 
-func Panic(args ...interface{}) {
-	p(tag("PANIC"), args...)
-	panic("ucsh")
+func Error(args ...interface{}) {
+	p(tag("E"), args...)
+}
+
+func Errorf(fmt string, args ...interface{}) {
+	p(tag("E"), gf.Sprintf(fmt, args...))
 }
 
 func Debug(args ...interface{}) {
@@ -61,10 +67,7 @@ func Debugf(fmt string, args ...interface{}) {
 	}
 }
 
-func Error(args ...interface{}) {
-	p(tag("E"), args...)
-}
-
-func Errorf(fmt string, args ...interface{}) {
-	p(tag("E"), gf.Sprintf(fmt, args...))
+func Panic(args ...interface{}) {
+	p(tag("PANIC"), args...)
+	panic("ucsh")
 }
