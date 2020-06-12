@@ -4,9 +4,10 @@
 package main
 
 import (
+	"io/ioutil"
+	"os"
 	"path/filepath"
 	"testing"
-	//~ "github.com/jrmsdev/ucsh/internal/_ucsht"
 )
 
 var tfiles = []string{
@@ -36,6 +37,27 @@ func TestCfgError(t *testing.T) {
 		r := recover()
 		if r == nil {
 			t.Error("config error did not fail")
+		}
+	}()
+	main()
+}
+
+func TestOpenError(t *testing.T) {
+	fh, err := ioutil.TempFile("", "ucsh.test.read.err.")
+	if err != nil {
+		t.Fatal(err)
+	}
+	tmpfn := fh.Name()
+	fh.Close()
+	defer os.Remove(tmpfn)
+	if err := os.Chmod(tmpfn, 0200); err != nil {
+		t.Fatal(err)
+	}
+	cfgfiles = []string{tmpfn}
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Error("open error did not fail")
 		}
 	}()
 	main()
