@@ -41,6 +41,8 @@ WORKDIR /go/src/ucsh
 ENV USER ucsh
 ENV HOME /home/ucsh
 
+ENV UCSH_DEBUG 1
+
 ENV GOBIN ''
 ENV GOPATH /go
 RUN go env && go version

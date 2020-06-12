@@ -7,15 +7,19 @@ import (
 	gf "fmt"
 	"os"
 	"runtime"
+	"strconv"
 )
 
 var out = os.Stderr
 var debug = false
 
 func init() {
-	dbg := os.Getenv("UCSH_DEBUG")
-	if dbg != "" && dbg != "0" {
-		debug = true
+	env := os.Getenv("UCSH_DEBUG")
+	if env != "" {
+		dbg, err := strconv.ParseBool(env)
+		if dbg && err == nil {
+			debug = true
+		}
 	}
 }
 
