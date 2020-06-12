@@ -9,22 +9,26 @@ import (
 	"runtime"
 )
 
-func Print(args ...interface{}) {
-	_, err := gf.Fprintln(os.Stderr, "ucsh:", gf.Sprint(args...))
-	if err != nil {
-		panic(err)
+var out = os.Stderr
+var debug = false
+
+func init() {
+	dbg := os.Getenv("UCSH_DEBUG")
+	if dbg != "" && dbg != "0" {
+		debug = true
 	}
+}
+
+func Print(args ...interface{}) {
+	gf.Fprintln(out, "ucsh:", gf.Sprint(args...))
 }
 
 func Printf(fmt string, args ...interface{}) {
-	Print(gf.Sprintf(fmt, args...))
+	gf.Fprintln(out, "ucsh:", gf.Sprintf(fmt, args...))
 }
 
 func p(tag string, args ...interface{}) {
-	_, err := gf.Fprintln(os.Stderr, "ucsh:", tag, gf.Sprint(args...))
-	if err != nil {
-		panic(err)
-	}
+	gf.Fprintln(out, "ucsh:", tag, gf.Sprint(args...))
 }
 
 func tag(s string) string {
@@ -42,11 +46,15 @@ func Panic(args ...interface{}) {
 }
 
 func Debug(args ...interface{}) {
-	p(tag("D"), args...)
+	if debug {
+		p(tag("D"), args...)
+	}
 }
 
 func Debugf(fmt string, args ...interface{}) {
-	p(tag("D"), gf.Sprintf(fmt, args...))
+	if debug {
+		p(tag("D"), gf.Sprintf(fmt, args...))
+	}
 }
 
 func Error(args ...interface{}) {
