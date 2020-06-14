@@ -17,8 +17,8 @@ func TestNew(t *testing.T) {
 
 func TestCheck(t *testing.T) {
 	tuser := &osuser.User{
-		Uid: "1000",
-		Gid: "1000",
+		Uid:      "1000",
+		Gid:      "1000",
 		Username: "ucsht",
 	}
 	u := New()
@@ -55,8 +55,8 @@ func TestCheckPanic(t *testing.T) {
 
 func TestLoad(t *testing.T) {
 	tuser := &osuser.User{
-		Uid: "1000",
-		Gid: "1000",
+		Uid:      "1000",
+		Gid:      "1000",
 		Username: "ucsht",
 	}
 	u := New()
@@ -86,13 +86,13 @@ func TestLoad(t *testing.T) {
 
 func TestReload(t *testing.T) {
 	tuser := &osuser.User{
-		Uid: "1000",
-		Gid: "1000",
+		Uid:      "1000",
+		Gid:      "1000",
 		Username: "ucsht",
 	}
 	t2user := &osuser.User{
-		Uid: "1001",
-		Gid: "1001",
+		Uid:      "1001",
+		Gid:      "1001",
 		Username: "ucsht2",
 	}
 	u := New()

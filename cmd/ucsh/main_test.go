@@ -85,8 +85,8 @@ func TestOsUserError(t *testing.T) {
 
 func TestUserLoad(t *testing.T) {
 	tuser := &osuser.User{
-		Uid: "1000",
-		Gid: "1000",
+		Uid:      "1000",
+		Gid:      "1000",
 		Username: "ucsht",
 	}
 	sh := ucsh.New()

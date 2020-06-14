@@ -13,25 +13,9 @@ import (
 	"github.com/jrmsdev/ucsh/internal/log"
 )
 
-func userCfgFile() string {
-	d, _ := os.UserConfigDir()
-	return filepath.Join(d, "ucsh.cfg")
-}
-
 var cfgfiles = []string{
 	filepath.FromSlash("/etc/ucsh.cfg"),
 	filepath.FromSlash("/usr/local/etc/ucsh.cfg"),
-	userCfgFile(),
-}
-
-func main() {
-	log.Debug("start")
-	sh := ucsh.New()
-	log.Debug(sh)
-	configure(sh)
-	setup(sh)
-	cmd.Main(sh)
-	log.Debug("end")
 }
 
 func configure(sh *ucsh.UCSh) {
@@ -70,6 +54,14 @@ func init() {
 	osUser, osUserErr = osuser.Current()
 }
 
+func userCfgFile() (string, error) {
+	d, err := os.UserConfigDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(d, "ucsh.cfg"), nil
+}
+
 func setup(sh *ucsh.UCSh) {
 	sh.Check()
 	log.Debug("setup")
@@ -77,6 +69,43 @@ func setup(sh *ucsh.UCSh) {
 		log.Error(osUserErr)
 		sh.Fail(osUserErr)
 	}
+	// load os user
 	sh.Check()
 	sh.User.Load(osUser)
+	// load user config
+	fn, err := userCfgFile()
+	if err != nil {
+		log.Error(err)
+		sh.Fail(err)
+	} else {
+		cfgerr := false
+		fh, err := os.Open(fn)
+		if err != nil {
+			if os.IsNotExist(err) {
+				log.Debug(err)
+			} else {
+				cfgerr = true
+				log.Error(err)
+			}
+		} else {
+			//~ sh.Config.User.load()
+			if err := sh.Config.User.Load(fn, fh); err != nil {
+				cfgerr = true
+				log.Error(err)
+			}
+		}
+		if cfgerr {
+			sh.Fail("user config error")
+		}
+	}
+}
+
+func main() {
+	log.Debug("start")
+	sh := ucsh.New()
+	log.Debug(sh)
+	configure(sh)
+	setup(sh)
+	cmd.Main(sh)
+	log.Debug("end")
 }

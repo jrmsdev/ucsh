@@ -40,7 +40,4 @@ func (u *User) Load(cur *osuser.User) {
 	if u.cur.Name == "" {
 		u.cur.Name = u.cur.Username
 	}
-	//~ if u.cur.HomeDir == "" {
-		//~ u.cur.HomeDir = u.cfg.HomeDir
-	//~ }
 }
