@@ -70,33 +70,31 @@ func setup(sh *ucsh.UCSh) {
 		sh.Fail(osUserErr)
 	}
 	// load os user
-	sh.Check()
 	sh.User.Load(osUser)
 	// load user config
 	fn, err := userCfgFile()
 	if err != nil {
 		log.Error(err)
 		sh.Fail(err)
-	} else {
-		cfgerr := false
-		fh, err := os.Open(fn)
-		if err != nil {
-			if os.IsNotExist(err) {
-				log.Debug(err)
-			} else {
-				cfgerr = true
-				log.Error(err)
-			}
+	}
+	cfgerr := false
+	fh, err := os.Open(fn)
+	if err != nil {
+		if os.IsNotExist(err) {
+			log.Debug(err)
 		} else {
-			//~ sh.Config.User.load()
-			if err := sh.Config.User.Load(fn, fh); err != nil {
-				cfgerr = true
-				log.Error(err)
-			}
+			cfgerr = true
+			log.Error(err)
 		}
-		if cfgerr {
-			sh.Fail("user config error")
+	} else {
+		//~ sh.Config.User.load()
+		if err := sh.Config.User.Load(fn, fh); err != nil {
+			cfgerr = true
+			log.Error(err)
 		}
+	}
+	if cfgerr {
+		sh.Fail("user config error")
 	}
 }
 

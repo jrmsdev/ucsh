@@ -42,17 +42,6 @@ func (sh *UCSh) String() string {
 	return "<UCSh>"
 }
 
-func (sh *UCSh) Fail(args ...interface{}) {
-	log.Debug("fail")
-	sh.err = errors.New(fmt.Sprint(args...))
-	sh.cancel()
-}
-
-func (sh *UCSh) Failf(f string, args ...interface{}) {
-	log.Debug("failf")
-	sh.Fail(fmt.Sprintf(f, args...))
-}
-
 func (sh *UCSh) Check() {
 	log.Debug("check context")
 	if err := sh.ctx.Err(); err != nil {
@@ -61,4 +50,25 @@ func (sh *UCSh) Check() {
 		}
 		log.Panic(err)
 	}
+}
+
+func (sh *UCSh) Error(args ...interface{}) {
+	sh.err = errors.New(fmt.Sprint(args...))
+	log.Debugf("error: %s", sh.err)
+	sh.cancel()
+}
+
+func (sh *UCSh) Errorf(f string, args ...interface{}) {
+	sh.Error(fmt.Sprintf(f, args...))
+}
+
+func (sh *UCSh) Fail(args ...interface{}) {
+	sh.err = errors.New(fmt.Sprint(args...))
+	log.Debugf("fail: %s", sh.err)
+	sh.cancel()
+	log.Panic(sh.err)
+}
+
+func (sh *UCSh) Failf(f string, args ...interface{}) {
+	sh.Fail(fmt.Sprintf(f, args...))
 }
