@@ -30,3 +30,29 @@ func TestUserLoad(t *testing.T) {
 		t.Errorf("u.Shell expected: /bin/bash - got: %s", u.Shell)
 	}
 }
+
+func TestUserLoadReadError(t *testing.T) {
+	u := newUser()
+	fh, err := os.Open("testdata")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer fh.Close()
+	err = u.Load(fh.Name(), fh)
+	if err == nil {
+		t.Error("user load should return a read error")
+	}
+}
+
+func TestUserLoadJsonError(t *testing.T) {
+	u := newUser()
+	fh, err := os.Open(filepath.FromSlash("testdata/user_loaderr.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer fh.Close()
+	err = u.Load(fh.Name(), fh)
+	if err == nil {
+		t.Error("user load should return a json parsing error")
+	}
+}
