@@ -4,8 +4,8 @@
 package cmd
 
 import (
-	"github.com/jrmsdev/ucsh/internal/ucsh"
 	"github.com/jrmsdev/ucsh/internal/log"
+	"github.com/jrmsdev/ucsh/internal/ucsh"
 )
 
 func Main(sh *ucsh.UCSh) {

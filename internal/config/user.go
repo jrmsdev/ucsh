@@ -23,14 +23,23 @@ func newUser() *User {
 	}
 }
 
-func (u *User) Load(name string, fh io.Reader) error {
-	log.Debugf("load %s", name)
+type userConfig struct {
+	User *User `json:"user,omitempty"`
+}
+
+type ucshUser struct {
+	D *userConfig `json:"ucsh,omitempty"`
+}
+
+func (u *User) Load(fn string, fh io.Reader) error {
+	log.Debugf("load %s", fn)
 	blob, err := ioutil.ReadAll(fh)
 	if err != nil {
 		log.Error(err)
 		return err
 	}
-	if err := json.Unmarshal(blob, u); err != nil {
+	obj := &ucshUser{D: &userConfig{User: u}}
+	if err := json.Unmarshal(blob, obj); err != nil {
 		log.Error(err)
 		return err
 	}

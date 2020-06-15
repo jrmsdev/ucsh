@@ -8,9 +8,9 @@ import (
 	osuser "os/user"
 	"path/filepath"
 
-	"github.com/jrmsdev/ucsh/internal/ucsh"
 	"github.com/jrmsdev/ucsh/internal/cmd"
 	"github.com/jrmsdev/ucsh/internal/log"
+	"github.com/jrmsdev/ucsh/internal/ucsh"
 )
 
 var cfgfiles = []string{
