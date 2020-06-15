@@ -1,7 +1,15 @@
 #!/bin/sh
 set -eu
+
+CMD=${1:-'run'}
+
+if test 'login' = "${CMD}"; then
+	echo "--- login"
+	exec /bin/sh -l
+fi
+
 echo "--- install"
 go install -i ./cmd/ucsh
 
 echo "--- exec"
-exec /usr/bin/sudo /bin/su -s /go/bin/ucsh -l ucsh
+exec /go/bin/ucsh
