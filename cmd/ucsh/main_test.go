@@ -14,18 +14,24 @@ import (
 	"github.com/jrmsdev/ucsh"
 )
 
-var tfiles = []string{
-	filepath.Join("", "ucsh.cfg"),
-	filepath.FromSlash("testdata/ucsh.cfg"),
-}
+var cfgfilesOrig = cfgfiles
 
 func TestMain(t *testing.T) {
-	cfgfiles = tfiles
+	cfgfiles = []string{
+		filepath.Join("", "ucsh.cfg"),
+		filepath.FromSlash("testdata/ucsh.cfg"),
+	}
+	defer func() {
+		cfgfiles = cfgfilesOrig
+	}()
 	main()
 }
 
 func TestCfgNotFound(t *testing.T) {
 	cfgfiles = []string{filepath.FromSlash("testdata/nofile.cfg")}
+	defer func() {
+		cfgfiles = cfgfilesOrig
+	}()
 	defer func() {
 		r := recover()
 		if r != nil {
@@ -37,6 +43,9 @@ func TestCfgNotFound(t *testing.T) {
 
 func TestCfgError(t *testing.T) {
 	cfgfiles = []string{"testdata"}
+	defer func() {
+		cfgfiles = cfgfilesOrig
+	}()
 	defer func() {
 		r := recover()
 		if r == nil {
@@ -58,6 +67,9 @@ func TestOpenError(t *testing.T) {
 		t.Fatal(err)
 	}
 	cfgfiles = []string{tmpfn}
+	defer func() {
+		cfgfiles = cfgfilesOrig
+	}()
 	defer func() {
 		r := recover()
 		if r == nil {
