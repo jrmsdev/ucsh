@@ -164,3 +164,69 @@ func TestUserCfgError(t *testing.T) {
 	}()
 	userConfig(sh)
 }
+
+func TestUserConfig(t *testing.T) {
+	sh := ucsh.New()
+	prevUserCfgDir := userCfgDir
+	userCfgDir = filepath.FromSlash("./testdata")
+	prevUserCfgErr := userCfgErr
+	userCfgErr = nil
+	defer func() {
+		userCfgDir = prevUserCfgDir
+		userCfgErr = prevUserCfgErr
+	}()
+	defer func() {
+		r := recover()
+		if r != nil {
+			t.Fatalf("user config should not panic: %s", r)
+		}
+	}()
+	userConfig(sh)
+}
+
+func TestUserConfigOpenError(t *testing.T) {
+	tmpdir, tmperr := ioutil.TempDir("", "ucsh_test_open_error")
+	if tmperr != nil {
+		t.Fatal(tmperr)
+	}
+	sh := ucsh.New()
+	prevUserCfgDir := userCfgDir
+	userCfgDir = tmpdir
+	prevUserCfgErr := userCfgErr
+	userCfgErr = nil
+	defer func() {
+		userCfgDir = prevUserCfgDir
+		userCfgErr = prevUserCfgErr
+		os.RemoveAll(tmpdir)
+	}()
+	fn := filepath.Join(tmpdir, "ucsh.cfg")
+	if err := ioutil.WriteFile(fn, []byte("{}"), 0200); err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Fatal("user config should panic with a permission denied error")
+		}
+	}()
+	userConfig(sh)
+}
+
+func TestUserConfigLoadError(t *testing.T) {
+	sh := ucsh.New()
+	prevUserCfgDir := userCfgDir
+	userCfgDir = filepath.FromSlash("./testdata/read_error")
+	prevUserCfgErr := userCfgErr
+	userCfgErr = nil
+	defer func() {
+		userCfgDir = prevUserCfgDir
+		userCfgErr = prevUserCfgErr
+	}()
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Fatal("user config should panic with a json parsing error")
+		}
+	}()
+	userConfig(sh)
+}
