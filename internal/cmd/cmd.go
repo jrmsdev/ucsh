@@ -4,7 +4,7 @@
 package cmd
 
 import (
-	"github.com/jrmsdev/ucsh"
+	"github.com/jrmsdev/ucsh/internal/ucsh"
 	"github.com/jrmsdev/ucsh/internal/log"
 )
 

@@ -8,7 +8,7 @@ import (
 	osuser "os/user"
 	"path/filepath"
 
-	"github.com/jrmsdev/ucsh"
+	"github.com/jrmsdev/ucsh/internal/ucsh"
 	"github.com/jrmsdev/ucsh/internal/cmd"
 	"github.com/jrmsdev/ucsh/internal/log"
 )
@@ -102,8 +102,6 @@ func userConfig(sh *ucsh.UCSh) {
 		sh.Fail("user config error")
 	}
 }
-
-// main
 
 func main() {
 	log.Debug("start")

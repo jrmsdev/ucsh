@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/jrmsdev/ucsh"
+	"github.com/jrmsdev/ucsh/internal/ucsh"
 )
 
 var cfgfilesOrig = cfgfiles
