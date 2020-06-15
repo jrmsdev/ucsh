@@ -96,8 +96,6 @@ func TestUserLoad(t *testing.T) {
 	osUserErr = nil
 	defer func() {
 		osUser = prevUser
-	}()
-	defer func() {
 		osUserErr = prevErr
 	}()
 	defer func() {
@@ -117,14 +115,39 @@ func TestUserLoadError(t *testing.T) {
 	osUserErr = nil
 	defer func() {
 		osUser = prevUser
-	}()
-	defer func() {
 		osUserErr = prevErr
 	}()
 	defer func() {
 		r := recover()
 		if r == nil {
 			t.Error("user load should fail")
+		}
+	}()
+	setup(sh)
+}
+
+func TestUserCfgError(t *testing.T) {
+	tuser := &osuser.User{
+		Uid:      "1000",
+		Gid:      "1000",
+		Username: "ucsht",
+	}
+	sh := ucsh.New()
+	prevUser := osUser
+	osUser = tuser
+	prevErr := osUserErr
+	osUserErr = nil
+	prevUserCfgErr := userCfgErr
+	userCfgErr = errors.New("testing.cfg.error")
+	defer func() {
+		osUser = prevUser
+		osUserErr = prevErr
+		userCfgErr = prevUserCfgErr
+	}()
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Error("user cfg should fail")
 		}
 	}()
 	setup(sh)
