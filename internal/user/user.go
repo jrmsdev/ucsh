@@ -18,6 +18,19 @@ func New() *User {
 	return new(User)
 }
 
+func (u *User) Load(cur *osuser.User) {
+	log.Debugf("load %s", cur)
+	if u.cur != nil {
+		log.Debugf("reload... %s", u.cur)
+		u.cur = nil
+	}
+	u.cur = cur
+	if u.cur.Name == "" {
+		u.cur.Name = u.cur.Username
+	}
+	u.check()
+}
+
 func (u *User) check() {
 	log.Debug("check")
 	if u.cur == nil {
@@ -26,18 +39,5 @@ func (u *User) check() {
 	if u.cur.Uid == "" || u.cur.Gid == "" || u.cur.Username == "" {
 		log.Panicf("invalid os user: Uid:%s Gid:%s Username:%s",
 			u.cur.Uid, u.cur.Gid, u.cur.Username)
-	}
-}
-
-func (u *User) Load(cur *osuser.User) {
-	log.Debugf("load %s", cur)
-	if u.cur != nil {
-		log.Debugf("reload... %s", u.cur)
-		u.cur = nil
-	}
-	u.cur = cur
-	u.check()
-	if u.cur.Name == "" {
-		u.cur.Name = u.cur.Username
 	}
 }

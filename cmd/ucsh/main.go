@@ -13,8 +13,6 @@ import (
 	"github.com/jrmsdev/ucsh/internal/log"
 )
 
-// configure
-
 var cfgfiles = []string{
 	filepath.FromSlash("/etc/ucsh.cfg"),
 	filepath.FromSlash("/usr/local/etc/ucsh.cfg"),
@@ -49,8 +47,6 @@ func configure(sh *ucsh.UCSh) {
 	}
 }
 
-// setup user
-
 var osUser *osuser.User
 var osUserErr error
 var userCfgDir string
@@ -68,16 +64,20 @@ func userCfgFile() (string, error) {
 	return filepath.Join(userCfgDir, "ucsh.cfg"), nil
 }
 
-func setup(sh *ucsh.UCSh) {
+func userLoad(sh *ucsh.UCSh) {
 	sh.Check()
-	log.Debug("setup")
+	log.Debug("user load")
 	if osUserErr != nil {
 		log.Error(osUserErr)
 		sh.Fail(osUserErr)
 	}
-	// load os user
+	//~ sh.User.Load(sh.Config.User, osUser)
 	sh.User.Load(osUser)
-	// load user config
+}
+
+func userConfig(sh *ucsh.UCSh) {
+	sh.Check()
+	log.Debug("user config")
 	fn, err := userCfgFile()
 	if err != nil {
 		log.Error(err)
@@ -110,7 +110,8 @@ func main() {
 	sh := ucsh.New()
 	log.Debug(sh)
 	configure(sh)
-	setup(sh)
+	userLoad(sh)
+	userConfig(sh)
 	cmd.Main(sh)
 	log.Debug("end")
 }

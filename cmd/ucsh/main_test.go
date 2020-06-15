@@ -80,7 +80,7 @@ func TestOsUserError(t *testing.T) {
 			t.Error("os user error did not fail")
 		}
 	}()
-	setup(sh)
+	userLoad(sh)
 }
 
 func TestUserLoad(t *testing.T) {
@@ -104,7 +104,7 @@ func TestUserLoad(t *testing.T) {
 			t.Errorf("user load should not fail: %s", r)
 		}
 	}()
-	setup(sh)
+	userLoad(sh)
 }
 
 func TestUserLoadError(t *testing.T) {
@@ -123,7 +123,7 @@ func TestUserLoadError(t *testing.T) {
 			t.Error("user load should fail")
 		}
 	}()
-	setup(sh)
+	userLoad(sh)
 }
 
 func TestUserCfgError(t *testing.T) {
@@ -150,5 +150,5 @@ func TestUserCfgError(t *testing.T) {
 			t.Error("user cfg should fail")
 		}
 	}()
-	setup(sh)
+	userConfig(sh)
 }
