@@ -13,11 +13,13 @@ import (
 
 type Config struct {
 	User *User `json:"user,omitempty"`
+	Container *Container `json:"container,omitempty"`
 }
 
 func New() *Config {
 	return &Config{
 		User: newUser(),
+		Container: newContainer(),
 	}
 }
 
