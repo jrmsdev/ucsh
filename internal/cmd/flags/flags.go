@@ -5,16 +5,19 @@ package flags
 
 import (
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/jrmsdev/ucsh/internal/log"
 )
 
-var Debug bool
+var help bool
+var debug bool
 
 func New(name string) *flag.FlagSet {
 	f := flag.NewFlagSet(name, flag.ExitOnError)
-	f.BoolVar(&Debug, "d", false, "enable debug log")
+	f.BoolVar(&help, "h", false, "show this usage information and exit")
+	f.BoolVar(&debug, "d", false, "enable debug log")
 	return f
 }
 
@@ -26,7 +29,11 @@ func init() {
 
 func Parse(f *flag.FlagSet) {
 	f.Parse(osArgs)
-	if Debug {
+	if help {
+		fmt.Fprintf(f.Output(), "Usage for %s:\n", f.Name())
+		f.PrintDefaults()
+		os.Exit(2)
+	} else if debug {
 		log.SetDebug(true)
 	}
 }
