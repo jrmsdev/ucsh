@@ -47,6 +47,9 @@ func (c *Config) List(prefix string) map[string]string {
 	log.Debugf("list '%s'", prefix)
 	l := make(map[string]string)
 	if prefix == "" {
+		for k, v := range c.ls(c.Container.list(), "") {
+			l["container." + k] = v
+		}
 		for k, v := range c.ls(c.User.list(), "") {
 			l["user." + k] = v
 		}
