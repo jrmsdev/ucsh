@@ -45,3 +45,9 @@ func (u *User) Load(fn string, fh io.Reader) error {
 	}
 	return nil
 }
+
+func (u *User) list() map[string]string {
+	return map[string]string{
+		"shell": u.Shell,
+	}
+}
