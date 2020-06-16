@@ -13,40 +13,6 @@ import (
 	"github.com/jrmsdev/ucsh/internal/ucsh"
 )
 
-var cfgfiles = []string{
-	filepath.FromSlash("/etc/ucsh.cfg"),
-	filepath.FromSlash("/usr/local/etc/ucsh.cfg"),
-}
-
-func configure(sh *ucsh.UCSh) {
-	sh.Check()
-	log.Debug("configure")
-	cfgerr := false
-	for _, fn := range cfgfiles {
-		if fn == "" || fn == "ucsh.cfg" {
-			continue
-		}
-		fh, err := os.Open(fn)
-		if err != nil {
-			if os.IsNotExist(err) {
-				log.Debug(err)
-			} else {
-				cfgerr = true
-				log.Error(err)
-			}
-		} else {
-			if err := sh.Config.Load(fh.Name(), fh); err != nil {
-				cfgerr = true
-				log.Error(err)
-			}
-		}
-		fh.Close()
-	}
-	if cfgerr {
-		sh.Fail("config error")
-	}
-}
-
 var osUser *osuser.User
 var osUserErr error
 var userCfgDir string
@@ -106,8 +72,7 @@ func userConfig(sh *ucsh.UCSh) {
 func main() {
 	log.Debug("start")
 	sh := ucsh.New()
-	log.Debug(sh)
-	configure(sh)
+	cmd.Configure(sh)
 	userLoad(sh)
 	userConfig(sh)
 	cmd.Main(sh)
