@@ -24,14 +24,11 @@ func New(name string) *flag.FlagSet {
 	return f
 }
 
-var osArgs []string
-
-func init() {
-	osArgs = os.Args[1:]
-}
-
-func Parse(f *flag.FlagSet) {
-	f.Parse(osArgs)
+func Parse(f *flag.FlagSet, args []string) {
+	f.Parse(args)
+	if debug {
+		log.SetDebug(true)
+	}
 	if help {
 		fmt.Fprintf(f.Output(), "Usage for %s:\n", f.Name())
 		f.PrintDefaults()
@@ -39,7 +36,5 @@ func Parse(f *flag.FlagSet) {
 	} else if version {
 		fmt.Fprintf(f.Output(), "%s version %s\n", f.Name(), ucsh.Version())
 		os.Exit(2)
-	} else if debug {
-		log.SetDebug(true)
 	}
 }

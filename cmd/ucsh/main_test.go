@@ -7,6 +7,10 @@ import (
 	"testing"
 )
 
+func init() {
+	args = []string{}
+}
+
 func TestMain(t *testing.T) {
 	defer func() {
 		r := recover()
