@@ -17,3 +17,9 @@ func newContainer() *Container {
 		Engine: "schroot",
 	}
 }
+
+func (c *Container) list() map[string]string {
+	return map[string]string{
+		"engine": c.Engine,
+	}
+}
