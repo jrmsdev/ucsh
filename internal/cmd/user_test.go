@@ -120,7 +120,7 @@ func TestUserConfig(t *testing.T) {
 }
 
 func TestUserConfigOpenError(t *testing.T) {
-	tmpdir, tmperr := ioutil.TempDir("", "ucsh_test_open_error")
+	tmpdir, tmperr := ioutil.TempDir("", "ucsh_test_user_config_open_error")
 	if tmperr != nil {
 		t.Fatal(tmperr)
 	}
@@ -134,7 +134,7 @@ func TestUserConfigOpenError(t *testing.T) {
 		userCfgErr = prevUserCfgErr
 		os.RemoveAll(tmpdir)
 	}()
-	fn := filepath.Join(tmpdir, "ucsh.cfg")
+	fn := filepath.Join(tmpdir, "config.json")
 	if err := ioutil.WriteFile(fn, []byte("{}"), 0200); err != nil {
 		t.Fatal(err)
 	}

@@ -12,8 +12,8 @@ import (
 )
 
 var cfgfiles = []string{
-	filepath.FromSlash("/etc/ucsh.cfg"),
-	filepath.FromSlash("/usr/local/etc/ucsh.cfg"),
+	filepath.FromSlash("/etc/ucsh/config.json"),
+	filepath.FromSlash("/usr/local/etc/ucsh/config.json"),
 }
 
 func Configure(sh *ucsh.UCSh) {

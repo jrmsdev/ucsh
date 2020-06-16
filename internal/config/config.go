@@ -13,13 +13,13 @@ import (
 )
 
 type Config struct {
-	User *User `json:"user,omitempty"`
+	User      *User      `json:"user,omitempty"`
 	Container *Container `json:"container,omitempty"`
 }
 
 func New() *Config {
 	return &Config{
-		User: newUser(),
+		User:      newUser(),
 		Container: newContainer(),
 	}
 }
@@ -48,10 +48,10 @@ func (c *Config) List(prefix string) map[string]string {
 	l := make(map[string]string)
 	if prefix == "" {
 		for k, v := range c.ls(c.Container.list(), "") {
-			l["container." + k] = v
+			l["container."+k] = v
 		}
 		for k, v := range c.ls(c.User.list(), "") {
-			l["user." + k] = v
+			l["user."+k] = v
 		}
 	}
 	return l
@@ -59,7 +59,7 @@ func (c *Config) List(prefix string) map[string]string {
 
 func (c *Config) ls(src map[string]string, filter string) map[string]string {
 	if filter != "" {
-		filter = strings.TrimSpace(filter) + "."
+		filter = filter + "."
 	}
 	l := make(map[string]string)
 	for k, v := range src {

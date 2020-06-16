@@ -20,6 +20,9 @@ var userCfgErr error
 func init() {
 	osUser, osUserErr = osuser.Current()
 	userCfgDir, userCfgErr = os.UserConfigDir()
+	if userCfgDir != "" {
+		userCfgDir = filepath.Join(userCfgDir, "ucsh")
+	}
 }
 
 func UserLoad(sh *ucsh.UCSh) {
@@ -37,7 +40,7 @@ func userCfgFile() (string, error) {
 	if userCfgErr != nil {
 		return "", userCfgErr
 	}
-	return filepath.Join(userCfgDir, "ucsh.cfg"), nil
+	return filepath.Join(userCfgDir, "config.json"), nil
 }
 
 func UserConfig(sh *ucsh.UCSh) {

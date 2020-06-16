@@ -16,7 +16,7 @@ var cfgfilesOrig = cfgfiles
 
 func TestConfigure(t *testing.T) {
 	sh := ucsh.New()
-	cfgfiles = []string{filepath.FromSlash("testdata/ucsh.cfg")}
+	cfgfiles = []string{filepath.FromSlash("testdata/config.json")}
 	defer func() {
 		cfgfiles = cfgfilesOrig
 	}()
