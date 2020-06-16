@@ -19,18 +19,28 @@ func init() {
 	args = os.Args[1:]
 }
 
+var (
+	cmdList bool
+)
+
 func main() {
 	log.Debug("start")
 
 	parser := flags.New("ucsh-config")
+	parser.BoolVar(&cmdList, "l", false, "list settings")
 	flags.Parse(parser, args)
 
 	sh := ucsh.New()
 	cmd.Configure(sh)
 	cmd.UserConfig(sh)
 
-	for k, v := range sh.Config.List("") {
-		fmt.Printf("%s=%s\n", k, v)
+	if cmdList {
+		filter := parser.Arg(0)
+		for k, v := range sh.Config.List(filter) {
+			fmt.Printf("%s=%s\n", k, v)
+		}
+	} else {
+		flags.ShowHelp(parser)
 	}
 
 	log.Debug("end")

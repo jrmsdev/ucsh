@@ -30,11 +30,15 @@ func Parse(f *flag.FlagSet, args []string) {
 		log.SetDebug(true)
 	}
 	if help {
-		fmt.Fprintf(f.Output(), "Usage for %s:\n", f.Name())
-		f.PrintDefaults()
-		os.Exit(2)
+		ShowHelp(f)
 	} else if version {
 		fmt.Fprintf(f.Output(), "%s version %s\n", f.Name(), ucsh.Version())
 		os.Exit(2)
 	}
+}
+
+func ShowHelp(f *flag.FlagSet) {
+	fmt.Fprintf(f.Output(), "Usage for %s:\n", f.Name())
+	f.PrintDefaults()
+	os.Exit(2)
 }
