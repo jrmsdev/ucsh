@@ -4,7 +4,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/jrmsdev/ucsh/internal/cmd"
@@ -36,9 +35,7 @@ func main() {
 
 	if cmdList {
 		filter := parser.Arg(0)
-		for k, v := range sh.Config.List(filter) {
-			fmt.Printf("%s=%s\n", k, v)
-		}
+		list(sh, filter)
 	} else {
 		flags.ShowHelp(parser)
 	}
