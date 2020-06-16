@@ -1,4 +1,6 @@
 #!/bin/sh
 set -eu
-./build.sh
-exec ./_build/ucsh.bin $@
+SRC=${1:-'ucsh'}
+./build.sh ${SRC}
+shift
+exec ./_build/cmd/${SRC}.bin $@

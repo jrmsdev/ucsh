@@ -1,3 +1,4 @@
 #!/bin/sh
 set -eu
-exec go build -mod=vendor -i -o ./_build/ucsh.bin ./cmd/ucsh
+SRC=${1:-'ucsh'}
+exec go build -mod=vendor -i -o ./_build/cmd/${SRC}.bin ./cmd/${SRC}
