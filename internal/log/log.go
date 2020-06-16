@@ -26,6 +26,10 @@ func init() {
 	}
 }
 
+func SetDebug(opt bool) {
+	debug = opt
+}
+
 func Print(args ...interface{}) {
 	gf.Fprintln(out, "ucsh:", gf.Sprint(args...))
 }
