@@ -12,7 +12,10 @@ import (
 
 func list(sh *ucsh.UCSh, filter string) {
 	log.Debug("list cmd")
-	for k, v := range sh.Config.List(filter) {
-		fmt.Printf("%s=%s\n", k, v)
+	cfg := sh.Config.List(filter)
+	for k, v := range def.List(filter) {
+		if cfg[k] != v {
+			fmt.Printf("%s=%s\n", k, cfg[k])
+		}
 	}
 }

@@ -8,14 +8,17 @@ import (
 
 	"github.com/jrmsdev/ucsh/internal/cmd"
 	"github.com/jrmsdev/ucsh/internal/cmd/flags"
+	"github.com/jrmsdev/ucsh/internal/config"
 	"github.com/jrmsdev/ucsh/internal/log"
 	"github.com/jrmsdev/ucsh/internal/ucsh"
 )
 
 var args []string
+var def *config.Config
 
 func init() {
 	args = os.Args[1:]
+	def = config.New()
 }
 
 var (
