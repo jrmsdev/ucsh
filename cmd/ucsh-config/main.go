@@ -23,13 +23,15 @@ func init() {
 
 var (
 	cmdList bool
+	listAll bool
 )
 
 func main() {
 	log.Debug("start")
 
 	parser := flags.New("ucsh-config")
-	parser.BoolVar(&cmdList, "l", false, "list settings")
+	parser.BoolVar(&cmdList, "l", false, "list settings (exclude default values unless -a)")
+	parser.BoolVar(&listAll, "a", false, "list all settings (only useful with -l)")
 	flags.Parse(parser, args)
 
 	sh := ucsh.New()

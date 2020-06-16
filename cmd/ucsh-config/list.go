@@ -14,7 +14,7 @@ func list(sh *ucsh.UCSh, filter string) {
 	log.Debug("list cmd")
 	cfg := sh.Config.List(filter)
 	for k, v := range def.List(filter) {
-		if cfg[k] != v {
+		if listAll || cfg[k] != v {
 			fmt.Printf("%s=%s\n", k, cfg[k])
 		}
 	}
