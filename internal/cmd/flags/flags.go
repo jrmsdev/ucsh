@@ -13,9 +13,9 @@ import (
 )
 
 var (
-	help bool = false
-	debug bool = false
-	version bool = false
+	help       bool   = false
+	debug      bool   = false
+	version    bool   = false
 	ConfigFile string = "config.json"
 )
 
@@ -34,15 +34,17 @@ func Parse(f *flag.FlagSet, args []string) {
 		log.SetDebug(true)
 	}
 	if help {
-		ShowHelp(f)
+		ShowHelp(f, "")
 	} else if version {
 		fmt.Fprintf(f.Output(), "%s version %s\n", f.Name(), ucsh.Version())
 		os.Exit(2)
 	}
 }
 
-func ShowHelp(f *flag.FlagSet) {
+func ShowHelp(f *flag.FlagSet, errmsg string) {
+	if errmsg != "" {
+		fmt.Fprintf(f.Output(), "ERROR: %s\n", errmsg)
+	}
 	fmt.Fprintf(f.Output(), "Usage for %s:\n", f.Name())
 	f.PrintDefaults()
-	os.Exit(2)
 }

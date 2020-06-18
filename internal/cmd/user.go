@@ -32,7 +32,6 @@ func UserLoad(sh *ucsh.UCSh) {
 		log.Error(osUserErr)
 		sh.Fail(osUserErr)
 	}
-	//~ sh.User.Load(sh.Config.User, osUser)
 	sh.User.Load(osUser)
 }
 

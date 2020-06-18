@@ -22,16 +22,24 @@ func init() {
 }
 
 var (
-	cmdList bool
-	listAll bool
+	cmdList   bool
+	listAll   bool
+	cmdUpdate bool
+	cmdRemove bool
 )
 
 func main() {
 	log.Debug("start")
 
 	parser := flags.New("ucsh-config")
-	parser.BoolVar(&cmdList, "l", false, "list settings (exclude default values unless -a)")
-	parser.BoolVar(&listAll, "a", false, "list all settings (only useful with -l)")
+	parser.BoolVar(&cmdList, "l", false,
+		"list settings (exclude default values unless -a)")
+	parser.BoolVar(&listAll, "a", false,
+		"list all settings (only useful with -l)")
+	parser.BoolVar(&cmdUpdate, "u", false,
+		"update setting: -u section.key val")
+	parser.BoolVar(&cmdRemove, "r", false,
+		"remove setting: -r section.key")
 	flags.Parse(parser, args)
 
 	sh := ucsh.New()
@@ -39,10 +47,27 @@ func main() {
 	cmd.UserConfig(sh)
 
 	if cmdList {
+		if cmdUpdate || cmdRemove {
+			flags.ShowHelp(parser,
+				"-l, -u and -r are mutually exclusive")
+		}
 		filter := parser.Arg(0)
 		list(sh, filter)
+	} else if cmdUpdate {
+		if cmdList || cmdRemove {
+			flags.ShowHelp(parser,
+				"-l, -u and -r are mutually exclusive")
+		}
+		update(sh, parser.Arg(0), parser.Arg(1))
+	} else if cmdRemove {
+		if cmdList || cmdUpdate {
+			flags.ShowHelp(parser,
+				"-l, -u and -r are mutually exclusive")
+		}
 	} else {
-		flags.ShowHelp(parser)
+		flags.ShowHelp(parser,
+			"no action, try: -l (list), -u (update), -r (remove)")
+		os.Exit(2)
 	}
 
 	log.Debug("end")
