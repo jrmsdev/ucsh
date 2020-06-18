@@ -11,16 +11,26 @@ import (
 	"github.com/jrmsdev/ucsh/internal/log"
 )
 
+type section interface {
+	kmap() map[string]*string
+}
+
 type Config struct {
+	section   map[string]section
 	User      *User      `json:"user,omitempty"`
 	Container *Container `json:"container,omitempty"`
 }
 
 func New() *Config {
-	return &Config{
-		User:      newUser(),
+	c := &Config{
 		Container: newContainer(),
+		User:      newUser(),
 	}
+	c.section = map[string]section{
+		"container": c.Container,
+		"user": c.User,
+	}
+	return c
 }
 
 type ucsh struct {

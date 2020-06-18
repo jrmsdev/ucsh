@@ -23,6 +23,12 @@ func newUser() *User {
 	}
 }
 
+func (u *User) kmap() map[string]*string {
+	return map[string]*string{
+		"shell": &u.Shell,
+	}
+}
+
 type userConfig struct {
 	User *User `json:"user,omitempty"`
 }
@@ -44,10 +50,4 @@ func (u *User) Load(fn string, fh io.Reader) error {
 		return err
 	}
 	return nil
-}
-
-func (u *User) list() map[string]string {
-	return map[string]string{
-		"shell": u.Shell,
-	}
 }

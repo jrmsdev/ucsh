@@ -20,23 +20,23 @@ func (c *Config) List(prefix string) map[string]string {
 	}
 	log.Debugf("list prefix='%s' filter='%s'", prefix, filter)
 	if prefix == "" || strings.HasPrefix(prefix, "container") {
-		for k, v := range c.ls(c.Container.list(), filter) {
+		for k, v := range c.ls(c.Container.kmap(), filter) {
 			l["container."+k] = v
 		}
 	}
 	if prefix == "" || strings.HasPrefix(prefix, "user") {
-		for k, v := range c.ls(c.User.list(), filter) {
+		for k, v := range c.ls(c.User.kmap(), filter) {
 			l["user."+k] = v
 		}
 	}
 	return l
 }
 
-func (c *Config) ls(src map[string]string, filter string) map[string]string {
+func (c *Config) ls(src map[string]*string, filter string) map[string]string {
 	l := make(map[string]string)
 	for k, v := range src {
 		if filter == "" || strings.HasPrefix(k, filter) {
-			l[k] = v
+			l[k] = *v
 		}
 	}
 	return l

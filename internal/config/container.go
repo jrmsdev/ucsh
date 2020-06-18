@@ -18,8 +18,8 @@ func newContainer() *Container {
 	}
 }
 
-func (c *Container) list() map[string]string {
-	return map[string]string{
-		"engine": c.Engine,
+func (c *Container) kmap() map[string]*string {
+	return map[string]*string{
+		"engine": &c.Engine,
 	}
 }
