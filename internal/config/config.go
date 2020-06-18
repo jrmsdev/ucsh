@@ -13,6 +13,7 @@ import (
 
 type section interface {
 	kmap() map[string]*string
+	setDefaults()
 }
 
 type Config struct {
@@ -37,8 +38,16 @@ type ucsh struct {
 	D *Config `json:"ucsh,omitempty"`
 }
 
+func (c *Config) setDefaults() {
+	for sn, s := range c.section {
+		log.Debugf("set defaults %s section", sn)
+		s.setDefaults()
+	}
+}
+
 func (c *Config) Load(filename string, fh io.Reader) error {
 	log.Debugf("load %s", filename)
+	c.setDefaults()
 	blob, err := ioutil.ReadAll(fh)
 	if err != nil {
 		log.Error(err)
@@ -55,7 +64,6 @@ func (c *Config) Load(filename string, fh io.Reader) error {
 func (c *Config) Save(filename string, fh io.Writer) error {
 	log.Debugf("save %s", filename)
 	obj := &ucsh{D: c}
-	//~ blob, err := json.Marshal(obj)
 	blob, err := json.MarshalIndent(obj, "", "\t")
 	if err != nil {
 		log.Error(err)

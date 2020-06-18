@@ -13,9 +13,12 @@ type Container struct {
 
 func newContainer() *Container {
 	log.Debug("new")
-	return &Container{
-		Engine: "schroot",
-	}
+	return &Container{}
+}
+
+func (c *Container) setDefaults() {
+	log.Debug("set defaults")
+	c.Engine = "docker"
 }
 
 func (c *Container) kmap() map[string]*string {

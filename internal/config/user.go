@@ -18,9 +18,12 @@ type User struct {
 
 func newUser() *User {
 	log.Debug("new")
-	return &User{
-		Shell: filepath.FromSlash("/bin/sh"),
-	}
+	return &User{}
+}
+
+func (u *User) setDefaults() {
+	log.Debug("set defaults")
+	u.Shell = filepath.FromSlash("/bin/sh")
 }
 
 func (u *User) kmap() map[string]*string {

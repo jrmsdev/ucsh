@@ -11,8 +11,8 @@ import (
 
 func TestNewUser(t *testing.T) {
 	u := newUser()
-	if u.Shell != filepath.FromSlash("/bin/sh") {
-		t.Errorf("u.Shell expected: /bin/sh - got: %s", u.Shell)
+	if u.Shell != "" {
+		t.Errorf("u.Shell expected: '' - got: '%s'", u.Shell)
 	}
 }
 
