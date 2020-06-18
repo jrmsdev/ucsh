@@ -19,14 +19,11 @@ func (c *Config) List(prefix string) map[string]string {
 		filter = items[1]
 	}
 	log.Debugf("list prefix='%s' filter='%s'", prefix, filter)
-	if prefix == "" || strings.HasPrefix(prefix, "container") {
-		for k, v := range c.ls(c.Container.kmap(), filter) {
-			l["container."+k] = v
-		}
-	}
-	if prefix == "" || strings.HasPrefix(prefix, "user") {
-		for k, v := range c.ls(c.User.kmap(), filter) {
-			l["user."+k] = v
+	for sn, s := range c.section {
+		if prefix == "" || strings.HasPrefix(prefix, sn) {
+			for k, v := range c.ls(s.kmap(), filter) {
+				l[sn+"."+k] = v
+			}
 		}
 	}
 	return l
