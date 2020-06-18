@@ -12,15 +12,19 @@ import (
 	"github.com/jrmsdev/ucsh/internal/log"
 )
 
-var help bool
-var debug bool
-var version bool
+var (
+	help bool = false
+	debug bool = false
+	version bool = false
+	ConfigFile string = "config.json"
+)
 
 func New(name string) *flag.FlagSet {
 	f := flag.NewFlagSet(name, flag.ExitOnError)
-	f.BoolVar(&help, "h", false, "show this usage information and exit")
-	f.BoolVar(&debug, "d", false, "enable debug log")
-	f.BoolVar(&version, "V", false, "show version information and exit")
+	f.BoolVar(&help, "h", help, "show this usage information and exit")
+	f.BoolVar(&debug, "d", debug, "enable debug log")
+	f.BoolVar(&version, "V", version, "show version information and exit")
+	f.StringVar(&ConfigFile, "c", ConfigFile, "config file `name`")
 	return f
 }
 

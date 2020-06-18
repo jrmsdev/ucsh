@@ -12,13 +12,13 @@ import (
 	"github.com/jrmsdev/ucsh/internal/ucsh"
 )
 
-var cfgfilesOrig = cfgfiles
+var cfgdirsOrig = cfgdirs
 
 func TestConfigure(t *testing.T) {
 	sh := ucsh.New()
-	cfgfiles = []string{filepath.FromSlash("testdata/config.json")}
+	cfgdirs = []string{filepath.FromSlash("testdata")}
 	defer func() {
-		cfgfiles = cfgfilesOrig
+		cfgdirs = cfgdirsOrig
 	}()
 	defer func() {
 		r := recover()
@@ -31,9 +31,9 @@ func TestConfigure(t *testing.T) {
 
 func TestCfgNotFound(t *testing.T) {
 	sh := ucsh.New()
-	cfgfiles = []string{filepath.FromSlash("testdata/nofile.cfg")}
+	cfgdirs = []string{filepath.FromSlash("testdata/nodir")}
 	defer func() {
-		cfgfiles = cfgfilesOrig
+		cfgdirs = cfgdirsOrig
 	}()
 	defer func() {
 		r := recover()
@@ -56,9 +56,9 @@ func TestCfgOpenError(t *testing.T) {
 	if err := os.Chmod(tmpfn, 0200); err != nil {
 		t.Fatal(err)
 	}
-	cfgfiles = []string{tmpfn}
+	cfgdirs = []string{tmpfn}
 	defer func() {
-		cfgfiles = cfgfilesOrig
+		cfgdirs = cfgdirsOrig
 	}()
 	defer func() {
 		r := recover()
@@ -71,9 +71,9 @@ func TestCfgOpenError(t *testing.T) {
 
 func TestCfgError(t *testing.T) {
 	sh := ucsh.New()
-	cfgfiles = []string{filepath.FromSlash("./testdata")}
+	cfgdirs = []string{filepath.FromSlash("./testdata/read_error")}
 	defer func() {
-		cfgfiles = cfgfilesOrig
+		cfgdirs = cfgdirsOrig
 	}()
 	defer func() {
 		r := recover()

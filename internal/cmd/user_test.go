@@ -150,7 +150,7 @@ func TestUserConfigOpenError(t *testing.T) {
 func TestUserConfigLoadError(t *testing.T) {
 	sh := ucsh.New()
 	prevUserCfgDir := userCfgDir
-	userCfgDir = filepath.FromSlash("./testdata/read_error")
+	userCfgDir = filepath.FromSlash("./testdata/load_error")
 	prevUserCfgErr := userCfgErr
 	userCfgErr = nil
 	defer func() {
