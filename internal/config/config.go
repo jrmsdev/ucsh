@@ -37,8 +37,8 @@ type ucsh struct {
 	D *Config `json:"ucsh,omitempty"`
 }
 
-func (c *Config) Load(name string, fh io.Reader) error {
-	log.Debugf("load %s", name)
+func (c *Config) Load(filename string, fh io.Reader) error {
+	log.Debugf("load %s", filename)
 	blob, err := ioutil.ReadAll(fh)
 	if err != nil {
 		log.Error(err)
@@ -46,6 +46,22 @@ func (c *Config) Load(name string, fh io.Reader) error {
 	}
 	obj := &ucsh{D: c}
 	if err := json.Unmarshal(blob, obj); err != nil {
+		log.Error(err)
+		return err
+	}
+	return nil
+}
+
+func (c *Config) Save(filename string, fh io.Writer) error {
+	log.Debugf("save %s", filename)
+	obj := &ucsh{D: c}
+	//~ blob, err := json.Marshal(obj)
+	blob, err := json.MarshalIndent(obj, "", "\t")
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+	if err := ioutil.WriteFile(filename, blob, 0644); err != nil {
 		log.Error(err)
 		return err
 	}

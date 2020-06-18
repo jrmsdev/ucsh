@@ -18,4 +18,5 @@ func update(sh *ucsh.UCSh, key, val string) {
 			//~ fmt.Printf("%s=%s\n", k, cfg[k])
 		//~ }
 	//~ }
+	sh.Config.Save("/tmp/config.json", nil)
 }

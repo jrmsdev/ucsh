@@ -66,7 +66,7 @@ func main() {
 		}
 	} else {
 		flags.ShowHelp(parser,
-			"no action, try: -l (list), -u (update), -r (remove)")
+			"no action, try with -l (list), -u (update) or -r (remove)")
 		os.Exit(2)
 	}
 
